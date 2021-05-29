@@ -7,13 +7,14 @@ const { io } = require('../index');
 io.on('connection', client => {
     console.log(`cliente conectado`);
 
-    console.log(client.handshake.headers['x-token']);
+    console.log(client.handshake.headers['uid']);
 
-    const [validated, uid] = checkJWT(client.handshake.headers['x-token']);
+    // const [validated, uid] = checkJWT(client.handshake.headers['x-token']);
+    const uid = client.handshake.headers['uid'];
 
-    console.log(validated);
+    // console.log(validated);
 
-    if (!validated)  return client.disconnect();
+    // if (!validated)  return client.disconnect();
 
     // client authenticated
     userConneted(uid);

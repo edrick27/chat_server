@@ -7,7 +7,7 @@ const getUsers = async (req, res = response) => {
     const skip = Number(req.query.skip) || 0;
 
     const usersDB = await user
-        .find({ _id: { $ne: req.uid } })
+        .find({ _id: { $ne: req.query.uid } })
         .sort('-online')
         .skip(skip)
         .limit(20);

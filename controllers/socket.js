@@ -35,7 +35,7 @@ const saveMessage = async (payload) => {
 
 const getMessages = async (req, res = response) => {
 
-    const myId = req.uid;
+    const myId = req.query.uid;
     const fromId = req.params.from;
 
 
