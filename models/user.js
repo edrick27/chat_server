@@ -7,23 +7,27 @@ const UserSchema = Schema({
         type: String,
         require: true
     },
-    email: {
+    wh_id: {
         type: String,
-        require: true,
-        unique: true
+        require: true
     },
-    password: {
+    id_organization: {
         type: String,
-        require: true,
+        require: true
+    },
+    urlpicture: {
+        type: String,
+        require: true
     },
     online: {
         type: Boolean,
         default: false
-    }
+    },
+
 });
 
 UserSchema.method('toJSON', function() {
-    const { __v, _id, password, ...object } = this.toObject();
+    const { __v, _id, ...object } = this.toObject();
     object.uid = _id;
     return object;
 });
