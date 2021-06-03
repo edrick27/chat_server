@@ -24,5 +24,5 @@ MessageSchema.method('toJSON', function() {
     const { __v, _id, ...object } = this.toObject();
     return object;
 });
-
+ 
 module.exports = model('Message', MessageSchema);

@@ -23,7 +23,11 @@ const UserSchema = Schema({
         type: Boolean,
         default: false
     },
-
+    organization: {
+        type: Schema.Types.ObjectId,
+        ref: 'Organization',
+        require: true,
+    }, 
 });
 
 UserSchema.method('toJSON', function() {
