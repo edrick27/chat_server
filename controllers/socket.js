@@ -55,13 +55,11 @@ const getMessages = async (req, res = response) => {
 
 const sendNotifications = async (payload) => {
 
-    const fromId = payload.from;
+    const userFrom = await User.findOne({ _id: payload.from });
 
-    const userFrom = await User
-            .findOne({ _id: fromId });
+    const userTo = await User.findOne({ _id: payload.to });
 
-    const OrganizationDB = await Organization
-            .findOne({ id: userFrom.id_organization });
+    const OrganizationDB = await Organization.findOne({ id: userFrom.id_organization });
 
     const usersOffline = await User
             .find({ online: false, id_organization: OrganizationDB.id })
@@ -72,12 +70,14 @@ const sendNotifications = async (payload) => {
     try {
 
         let data = {
-            chat_room: payload.to,
             title: userFrom.name,
             message: payload.msg,
             created_by: userFrom.wh_id,
-            users: arrayUserOffline
+            users: arrayUserOffline,
+            chat_room: JSON.stringify(userTo),
         };
+
+        console.log(JSON.stringify(data));
 
         const response = await axios.post(
             'https://acme.whagons.com/api/sendChatNotification', 
