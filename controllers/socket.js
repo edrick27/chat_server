@@ -1,7 +1,9 @@
 const axios = require('axios');
+const AWS = require('aws-sdk');
+var uuid = require('uuid');
 const Message = require("../models/message");
-const User = require("../models/user")
-const Organization = require("../models/organization")
+const User = require("../models/user");
+const Organization = require("../models/organization");
 
 
 const userConneted = async (uid = '') => {
@@ -24,6 +26,8 @@ const userDisConneted = async (uid = '') => {
 
 const saveMessage = async (payload) => {
 
+    uploadImage(payload);
+
     try {
 
         const message = new Message(payload);
@@ -39,7 +43,6 @@ const getMessages = async (req, res = response) => {
 
     const myId = req.query.uid;
     const fromId = req.params.from;
-
 
     const messageDB = await Message.find({ 
         $or: [{ from: myId, to: fromId}, { from : fromId, to: myId}] 
@@ -87,6 +90,31 @@ const sendNotifications = async (payload) => {
     } catch (error) {
         console.log(error.response.data);
     }
+}
+
+const uploadImage = (payload) => {
+
+    const spacesEndpoint = new AWS.Endpoint(process.env.DO_SPACES_ENDPOINT);
+    const s3 = new AWS.S3({
+        endpoint: spacesEndpoint,
+        accessKeyId: process.env.DO_SPACES_KEY,
+        secretAccessKey: process.env.DO_SPACES_SECRET
+    });
+
+    let client = process.env.DO_SPACES_CLIENT;
+    let name = client + '/'  + uuid.v4() + ".jpg";
+
+    var params = {
+        Bucket: process.env.DO_SPACES_BUCKET,
+        Key: name,
+        Body: payload.msg,
+        ACL: "public-read",
+    };
+    
+    s3.putObject(params, function(err, data) {
+        if (err) {console.log(err, err.stack);}
+        else     {console.log(data);}
+    });
 }
 
 

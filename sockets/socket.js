@@ -48,7 +48,7 @@ io.on('connection', client => {
         console.log(payload);
 
         await saveMessage(payload);
-        await sendNotifications(payload);
+        // await sendNotifications(payload);
         io.to(payload.to).emit('personal-msg', payload);
         // io.emit('nuevo-mensaje', payload);
     });
