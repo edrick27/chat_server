@@ -15,6 +15,12 @@ const MessageSchema = Schema({
     msg: {
         type: String,
         require: true,
+    },
+    type: {
+        type: String,
+        require: true,
+        enum : ['IMAGE', 'TEXT', 'AUDIO'],
+        default: 'TEXT'
     }
 }, {
     timestamps: true
