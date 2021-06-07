@@ -47,8 +47,9 @@ const getMessages = async (req, res = response) => {
     const fromId = req.params.from;
 
     const messageDB = await Message.find({
-        $or: [{ from: myId, to: fromId }, { from: fromId, to: myId }]
-    })
+            $or: [{ from: myId, to: fromId }, { from: fromId, to: myId }]
+        })
+        .populate({ path: 'from', select: ['name', 'urlpicture'] })
         .sort({ createdAt: 'desc' })
         .limit(30);
 
