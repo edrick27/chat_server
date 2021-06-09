@@ -30,6 +30,7 @@ app.use(express.static(publicPath));
 app.use('/api/login', require('./routes/auth'))
 app.use('/api/users', require('./routes/user'))
 app.use('/api/messages', require('./routes/message'))
+app.use('/api/rooms', require('./routes/room'))
 
 
 server.listen(process.env.PORT, (error) => {
