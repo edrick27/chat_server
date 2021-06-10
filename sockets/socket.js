@@ -17,7 +17,7 @@ io.on('connection', client => {
     // if (!validated)  return client.disconnect();
 
     // client authenticated
-    userConneted(uid);
+    // userConneted(uid);
 
     //ingresar el usuario a una sala
     client.join(uid);
@@ -42,14 +42,24 @@ io.on('connection', client => {
         io.emit('nuevo-mensaje', payload);
     });
 
-    client.on('personal-msg', async (payload) => { 
+    client.on('room-msg', async (payload) => { 
 
-        console.log(`personal-msg: ${payload}`);
+        console.log(`room-msg: ${payload}`);
         console.log(payload);
 
-        await saveMessage(payload);
+        let newMsg = await saveMessage(payload);
         // await sendNotifications(payload);
-        io.to(payload.to).emit('personal-msg', payload);
-        // io.emit('nuevo-mensaje', payload);
+        io.to(payload.room).emit('room-msg', newMsg);
     });
+
+    // client.on('personal-msg', async (payload) => { 
+
+    //     console.log(`personal-msg: ${payload}`);
+    //     console.log(payload);
+
+    //     await saveMessage(payload);
+    //     // await sendNotifications(payload);
+    //     io.to(payload.to).emit('personal-msg', payload);
+    //     // io.emit('nuevo-mensaje', payload);
+    // });
 });

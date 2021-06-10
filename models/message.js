@@ -7,9 +7,9 @@ const MessageSchema = Schema({
         ref: 'User',
         require: true,
     }, 
-    to: {
+    room: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Room',
         require: true,
     }, 
     msg: {

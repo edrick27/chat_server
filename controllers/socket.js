@@ -31,11 +31,13 @@ const saveMessage = async (payload) => {
         if (payload.type == 'IMAGE') {
             payload.msg = await uploadImage(payload);
         }
-        
-        const message = new Message(payload);
-        await message.save();
 
-        return true;
+        const message = new Message(payload);
+        let newMsg = await message.save();
+        newMsg = await newMsg.populate({ path: 'from', select: ['name', 'urlpicture'] }).execPopulate();
+        console.log(`*** newMsg *** ${newMsg}`);
+
+        return newMsg;
     } catch (error) {
         return false;
     }
@@ -44,11 +46,9 @@ const saveMessage = async (payload) => {
 const getMessages = async (req, res = response) => {
 
     const myId = req.query.uid;
-    const fromId = req.params.from;
+    const idRoom = req.params.idRoom;
 
-    const messageDB = await Message.find({
-            $or: [{ from: myId, to: fromId }, { from: fromId, to: myId }]
-        })
+    const messageDB = await Message.find({ room: idRoom })
         .populate({ path: 'from', select: ['name', 'urlpicture'] })
         .sort({ createdAt: 'desc' })
         .limit(30);

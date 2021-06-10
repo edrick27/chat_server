@@ -10,7 +10,7 @@ const validateJWT = require('../middlewares/validar-token');
 const router = Router();
 
 
-router.get('/:from', getMessages);
+router.get('/:idRoom', getMessages);
 
 
 module.exports = router;
