@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 var uuid = require('uuid');
 const Message = require("../models/message");
 const User = require("../models/user");
+const Room = require("../models/room");
 const Organization = require("../models/organization");
 
 
@@ -61,18 +62,25 @@ const getMessages = async (req, res = response) => {
 
 const sendNotifications = async (payload) => {
 
+    const roomDB = await Room.findOne({ _id: payload.room });
     const userFrom = await User.findOne({ _id: payload.from });
 
-    const userTo = await User.findOne({ _id: payload.to });
-
-    const OrganizationDB = await Organization.findOne({ id: userFrom.id_organization });
-
     const usersOffline = await User
-        .find({ online: false, id_organization: OrganizationDB.id })
+        .find({ 
+            online: false, 
+            $and: [
+                { _id: { $in: roomDB.participans } },
+                { _id: { $ne: payload.from }, }
+            ],
+         })
         .select('wh_id');
-
+        
+        
     let arrayUserOffline = usersOffline.map((user) => user.wh_id);
 
+    console.log("************* arrayUserOffline *************");
+    console.log(arrayUserOffline);
+        
     try {
 
         let data = {
@@ -80,13 +88,13 @@ const sendNotifications = async (payload) => {
             message: payload.msg,
             created_by: userFrom.wh_id,
             users: arrayUserOffline,
-            chat_room: JSON.stringify(userTo),
+            chat_room: JSON.stringify(roomDB),
         };
 
         console.log(JSON.stringify(data));
 
         const response = await axios.post(
-            'https://acme.whagons.com/api/sendChatNotification',
+            'https://demov2.dinganddone.com/api/sendChatNotification',
             data,
             { headers: { "Content-Type": "application/json" } }
         );

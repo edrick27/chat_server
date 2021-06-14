@@ -39,24 +39,25 @@ const createUser =  async (req, res = response) => {
         msg: 'usuarios creados con exito!',
         users: allUsers
     });
+}
 
-    // users.forEach(userJson => {
+const searchUsers = async (req, res = response) => {
 
-    //     const userDB = new User(userJson);
-    //     userDB.save();
-    // });
+    const { where, uid } = req.body;
 
-    // try {
+    const usersDB = await User
+        .find({ name: { $regex: '.*' + where + '.*', $options: 'i' } })
+        .sort('name')
+        .limit(200);
 
-    // } catch (error) {
-    //     res.status(500).json({
-    //         ok: false,
-    //         msg: 'Hable con el administrador'
-    //     });
-    // }
+    res.json({
+        ok: true,
+        users: usersDB,
+    });
 }
 
 module.exports = {
     getUsers,
-    createUser
+    createUser,
+    searchUsers
 };
