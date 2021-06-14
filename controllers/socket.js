@@ -7,18 +7,18 @@ const Room = require("../models/room");
 const Organization = require("../models/organization");
 
 
-const userConneted = async (uid = '') => {
+const userConneted = async (user_uid = '') => {
 
-    const userDB = await User.findById(uid);
+    const userDB = await User.findById(user_uid);
     userDB.online = true;
     await userDB.save();
 
     return userDB;
 }
 
-const userDisConneted = async (uid = '') => {
+const userDisConneted = async (user_uid = '') => {
 
-    const userDB = await User.findById(uid);
+    const userDB = await User.findById(user_uid);
     userDB.online = false;
     await userDB.save();
 

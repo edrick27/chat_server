@@ -10,12 +10,13 @@ io.on('connection', client => {
 
     // const [validated, uid] = checkJWT(client.handshake.headers['x-token']);
     const uid = client.handshake.headers['uid'];
+    const user_uid = client.handshake.headers['user_uid'];
 
     // console.log(validated);
     // if (!validated)  return client.disconnect();
 
     // client set online
-    // userConneted(uid);
+    userConneted(user_uid);
 
     //ingresar el usuario a una sala
     client.join(uid);
@@ -23,7 +24,7 @@ io.on('connection', client => {
 
     client.on('disconnect', () => { 
         console.log(`cliente desconectado`);
-        // userDisConneted(uid);
+        userDisConneted(user_uid);
     });
 
     client.on('mensaje', (msj) => { 
