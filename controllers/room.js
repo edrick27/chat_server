@@ -1,5 +1,6 @@
 const { response } = require("express");
 const Room = require("../models/room");
+const roomType = require("../enum/room_enum");
 
 
 const getRooms = async (req, res = response) => {
@@ -20,14 +21,24 @@ const getRooms = async (req, res = response) => {
 
 const createRoom =  async (req, res = response) => {
 
-    const room = new Room(req.body);
-    await room.save();
+    let newRoom = null;
+    const { participans, type } = req.body;
+    
+    if (type == roomType.PRIVATE) {
+        findRoom = await Room.find({ participans: participans, type: roomType.PRIVATE});
+        newRoom = (findRoom.length > 0) ? findRoom[0] : null;
+    }  
+
+    if (newRoom == null) {
+        const room = new Room(req.body);
+        newRoom = await room.save();
+    } 
 
     res.json({
         ok: true,
+        room: newRoom,
         msg: 'sala creada con exito!',
     });
-
 }
 
 module.exports = {
