@@ -19,7 +19,7 @@ const getUsers = async (req, res = response) => {
     });
 }
 
-const createUser =  async (req, res = response) => {
+const createManyUser =  async (req, res = response) => {
 
     const { users, organization } = req.body;
 
@@ -70,9 +70,23 @@ const updateUserAvatar =  async (req, res = response) => {
     });
 }
 
+const createUser =  async (req, res = response) => {
+
+    const { user } = req.body;
+
+    const newUser = await User.create(user);
+
+    res.json({
+        ok: true,
+        msg: 'usuarios creados con exito!',
+        user: newUser
+    });
+}
+
 module.exports = {
     getUsers,
     createUser,
     searchUsers,
+    createManyUser,
     updateUserAvatar
 };
