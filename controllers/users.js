@@ -56,8 +56,23 @@ const searchUsers = async (req, res = response) => {
     });
 }
 
+const updateUserAvatar =  async (req, res = response) => {
+
+    const { uid, urlpicture } = req.body;
+
+    const userDB = await User.findById(uid);
+    userDB.urlpicture = urlpicture;
+    await userDB.save();
+
+    res.json({
+        ok: true,
+        msg: 'usuario actualizado con exito!',
+    });
+}
+
 module.exports = {
     getUsers,
     createUser,
-    searchUsers
+    searchUsers,
+    updateUserAvatar
 };
