@@ -1,6 +1,7 @@
 const { response } = require("express");
 const Room = require("../models/room");
 const roomType = require("../enum/room_enum");
+const { sendNotifications } = require('./socket');
 
 
 const getRooms = async (req, res = response) => {
@@ -32,6 +33,14 @@ const createRoom =  async (req, res = response) => {
     if (newRoom == null) {
         const room = new Room(req.body);
         newRoom = await room.save();
+
+        if (type == roomType.GROUP) {
+            sendNotifications({
+                room: newRoom.id,
+                from: participans[participans.length - 1],
+                msg: `Te añadio al grupo ${newRoom.name}`
+            });
+        }
     } 
 
     res.json({
