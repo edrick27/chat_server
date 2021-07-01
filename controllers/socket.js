@@ -132,12 +132,20 @@ const uploadImage = (payload) => {
     })
 }
 
+const getUserTyping = async (user_uid = '') => {
+
+    const userDB = await User.findById(user_uid)
+                             .select(['uid', 'name', 'urlpicture']);
+    return userDB;
+}
+
 
 module.exports = {
     userConneted,
     userDisConneted,
     saveMessage,
     getMessages,
-    sendNotifications
+    sendNotifications,
+    getUserTyping
 }
 

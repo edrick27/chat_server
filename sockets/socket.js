@@ -1,5 +1,4 @@
-const { userConneted, userDisConneted, saveMessage, sendNotifications } = require('../controllers/socket');
-const { checkJWT } = require('../helpers/jwt');
+const { userConneted, userDisConneted, saveMessage, sendNotifications, getUserTyping } = require('../controllers/socket');
 const { io } = require('../index');
 
 
@@ -46,5 +45,13 @@ io.on('connection', client => {
         let newMsg = await saveMessage(payload);
         io.to(payload.room).emit('room-msg', newMsg);
         await sendNotifications(payload);
+    });
+
+    client.on('user-typing', async (payload) => { 
+
+        console.log(`user-typing: ${payload}`);
+        let userTyping = await getUserTyping(payload['user']);
+
+        io.to(payload.room).emit('user-typing', userTyping);
     });
 });
