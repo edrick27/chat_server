@@ -11,7 +11,6 @@ io.on('connection', client => {
     const uid = client.handshake.headers['uid'];
     const user_uid = client.handshake.headers['user_uid'];
 
-    // console.log(validated);
     // if (!validated)  return client.disconnect();
 
     // client set online
@@ -22,13 +21,10 @@ io.on('connection', client => {
 
 
     client.on('disconnect', () => { 
-        console.log(`cliente desconectado`);
         userDisConneted(user_uid);
     });
 
     client.on('mensaje', (msj) => { 
-        console.log(`llego el msj ${msj['nombre']}`);
-
         io.emit('mensaje', { admin: 'nuevo mensaje' });
     });
 
@@ -39,9 +35,6 @@ io.on('connection', client => {
 
     client.on('room-msg', async (payload) => { 
 
-        console.log(`room-msg: ${payload}`);
-        console.log(payload);
-
         let newMsg = await saveMessage(payload);
         await updateLastmsgRoom(payload.room, newMsg._id);
         io.to(payload.room).emit('room-msg', newMsg);
@@ -49,10 +42,7 @@ io.on('connection', client => {
     });
 
     client.on('user-typing', async (payload) => { 
-
-        console.log(`user-typing: ${payload}`);
         let userTyping = await getUserTyping(payload['user']);
-
         io.to(payload.room).emit('user-typing', userTyping);
     });
 });

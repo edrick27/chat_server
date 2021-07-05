@@ -36,7 +36,6 @@ const saveMessage = async (payload) => {
         const message = new Message(payload);
         let newMsg = await message.save();
         newMsg = await newMsg.populate({ path: 'from', select: ['name', 'urlpicture'] }).execPopulate();
-        console.log(`*** newMsg *** ${newMsg}`);
 
         return newMsg;
     } catch (error) {
@@ -78,9 +77,6 @@ const sendNotifications = async (payload) => {
         
     let arrayUserOffline = usersOffline.map((user) => user.wh_id);
 
-    console.log("************* arrayUserOffline *************");
-    console.log(arrayUserOffline);
-        
     try {
 
         let data = {
@@ -91,16 +87,12 @@ const sendNotifications = async (payload) => {
             chat_room: JSON.stringify(roomDB),
         };
 
-        console.log(JSON.stringify(data));
-
         const response = await axios.post(
             'https://demov2.dinganddone.com/api/sendChatNotification',
             data,
             { headers: { "Content-Type": "application/json" } }
         );
-    } catch (error) {
-        console.log(error.response.data);
-    }
+    } catch (error) {}
 }
 
 const uploadImage = (payload) => {
@@ -141,13 +133,9 @@ const getUserTyping = async (user_uid = '') => {
 
 const updateLastmsgRoom = async (idroom, idmessage) => {
 
-    console.log(`updateLastmsgRoom  idroom: ${idroom} idmessage: ${idmessage}`);
-
     const roomDB = await Room.findById(idroom);
     roomDB.last_msg = idmessage;
     let room = await roomDB.save();
-    console.log("updateLastmsgRoom 2");
-    console.log(room);
 
     return true;
 }
