@@ -139,6 +139,19 @@ const getUserTyping = async (user_uid = '') => {
     return userDB;
 }
 
+const updateLastmsgRoom = async (idroom, idmessage) => {
+
+    console.log(`updateLastmsgRoom  idroom: ${idroom} idmessage: ${idmessage}`);
+
+    const roomDB = await Room.findById(idroom);
+    roomDB.last_msg = idmessage;
+    let room = await roomDB.save();
+    console.log("updateLastmsgRoom 2");
+    console.log(room);
+
+    return true;
+}
+
 
 module.exports = {
     userConneted,
@@ -146,6 +159,7 @@ module.exports = {
     saveMessage,
     getMessages,
     sendNotifications,
-    getUserTyping
+    getUserTyping,
+    updateLastmsgRoom
 }
 

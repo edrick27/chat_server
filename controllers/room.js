@@ -11,6 +11,7 @@ const getRooms = async (req, res = response) => {
     const roomsDB = await Room
         .find({ participans: req.query.user_uid })
         .select(['name', 'urlpicture', 'type'])
+        .populate({ path: 'last_msg', select: ['msg', 'type', 'createdAt'] })
         .skip(skip)
         .limit(20);
 
@@ -50,7 +51,24 @@ const createRoom =  async (req, res = response) => {
     });
 }
 
+
+const findRoom = async (req, res = response) => {
+
+    const { idroom } = req.body;
+
+    const roomDB = await Room
+        .findOne({ _id: idroom })
+        .select(['name', 'urlpicture', 'type'])
+        .populate({ path: 'participans', select: ['name', 'urlpicture'] });
+
+    res.json({
+        ok: true,
+        room: roomDB,
+    });
+}
+
 module.exports = {
     getRooms,
-    createRoom
+    createRoom,
+    findRoom
 };

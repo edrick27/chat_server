@@ -30,6 +30,10 @@ const RoomSchema = Schema({
         ref: 'Organization',
         require: true,
     }, 
+    last_msg: {
+        type: Schema.Types.ObjectId,
+        ref: 'Message',
+    }, 
 });
 
 RoomSchema.method('toJSON', function() {

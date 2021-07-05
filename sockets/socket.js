@@ -1,4 +1,4 @@
-const { userConneted, userDisConneted, saveMessage, sendNotifications, getUserTyping } = require('../controllers/socket');
+const { userConneted, userDisConneted, saveMessage, sendNotifications, getUserTyping, updateLastmsgRoom } = require('../controllers/socket');
 const { io } = require('../index');
 
 
@@ -43,6 +43,7 @@ io.on('connection', client => {
         console.log(payload);
 
         let newMsg = await saveMessage(payload);
+        await updateLastmsgRoom(payload.room, newMsg._id);
         io.to(payload.room).emit('room-msg', newMsg);
         await sendNotifications(payload);
     });
