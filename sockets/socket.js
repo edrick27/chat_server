@@ -5,39 +5,42 @@ const { io } = require('../index');
 // Mensajes de Sockets
 io.on('connection', client => {
     console.log(`cliente conectado`);
-    console.log(client.handshake.headers['uid']);
+    console.log(client.handshake.headers['organization_uid']);
 
     // const [validated, uid] = checkJWT(client.handshake.headers['x-token']);
-    const uid = client.handshake.headers['uid'];
-    const user_uid = client.handshake.headers['user_uid'];
-
     // if (!validated)  return client.disconnect();
+
+    const organization_uid = client.handshake.headers['organization_uid'];
+    const user_uid = client.handshake.headers['user_uid'];
 
     // client set online
     userConneted(user_uid);
 
-    //ingresar el usuario a una sala
-    client.join(uid);
-
+    //ingresar el usuario a la sala general de la organization
+    client.join(organization_uid);
 
     client.on('disconnect', () => { 
         userDisConneted(user_uid);
     });
 
-    client.on('mensaje', (msj) => { 
-        io.emit('mensaje', { admin: 'nuevo mensaje' });
+    client.on('join-to-room', (payload) => { 
+        //ingresar el usuario a una sala de chat
+        client.join(payload.room);
     });
 
-    client.on('emitir-mensaje', (payload) => { 
-
-        io.emit('nuevo-mensaje', payload);
+    client.on('leave-room', (payload) => { 
+        //ingresar el usuario a una sala de chat
+        client.leave(payload.room);
     });
 
     client.on('room-msg', async (payload) => { 
 
         let newMsg = await saveMessage(payload);
+        console.log("room-msg room-msg room-msg");
+        console.log(newMsg);
         await updateLastmsgRoom(payload.room, newMsg._id);
         io.to(payload.room).emit('room-msg', newMsg);
+        io.to(organization_uid).emit('refresh-list-room');
         await sendNotifications(payload);
     });
 
