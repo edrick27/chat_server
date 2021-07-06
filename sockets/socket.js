@@ -48,4 +48,8 @@ io.on('connection', client => {
         let userTyping = await getUserTyping(payload['user']);
         io.to(payload.room).emit('user-typing', userTyping);
     });
+
+    client.on('refresh-list-room', (payload) => { 
+        io.to(organization_uid).emit('refresh-list-room');
+    });
 });
