@@ -11,7 +11,13 @@ const getRooms = async (req, res = response) => {
     const roomsDB = await Room
         .find({ participans: req.query.user_uid })
         .select(['name', 'urlpicture', 'type'])
-        .populate({ path: 'last_msg', select: ['msg', 'type', 'createdAt'] })
+        .populate({ 
+            path: 'last_msg', select: ['msg', 'type', 'createdAt'],
+            populate : {
+                path : 'from',
+                select: ['name']
+            }
+        })
         .skip(skip)
         .limit(20);
 
