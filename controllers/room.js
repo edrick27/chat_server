@@ -30,6 +30,7 @@ const getRooms = async (req, res = response) => {
 const createRoom =  async (req, res = response) => {
 
     let newRoom = null;
+    let findRoom = null;
     const { participans, type } = req.body;
     
     if (type == roomType.PRIVATE) {
