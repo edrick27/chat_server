@@ -33,6 +33,7 @@ const RoomSchema = Schema({
     last_msg: {
         type: Schema.Types.ObjectId,
         ref: 'Message',
+        default: null
     }, 
 });
 
