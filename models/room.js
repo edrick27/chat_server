@@ -16,7 +16,7 @@ const RoomSchema = Schema({
         enum : ['GROUP', 'PRIVATE'],
         default: 'TEXT'
     },
-    participans: [{
+    participants: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
         require: true,

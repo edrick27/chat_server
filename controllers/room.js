@@ -9,7 +9,7 @@ const getRooms = async (req, res = response) => {
     const skip = Number(req.query.skip) || 0;
 
     const roomsDB = await Room
-        .find({ participans: req.query.user_uid })
+        .find({ participants: req.query.user_uid })
         .select(['name', 'urlpicture', 'type'])
         .populate({ 
             path: 'last_msg', select: ['msg', 'type', 'createdAt'],
@@ -31,10 +31,10 @@ const createRoom =  async (req, res = response) => {
 
     let newRoom = null;
     let findRoom = null;
-    const { participans, type } = req.body;
+    const { participants, type } = req.body;
     
     if (type == roomType.PRIVATE) {
-        findRoom = await Room.find({ participans: participans, type: roomType.PRIVATE});
+        findRoom = await Room.find({ participants: participants, type: roomType.PRIVATE});
         newRoom = (findRoom.length > 0) ? findRoom[0] : null;
     }  
 
@@ -45,7 +45,7 @@ const createRoom =  async (req, res = response) => {
         if (type == roomType.GROUP) {
             sendNotifications({
                 room: newRoom.id,
-                from: participans[participans.length - 1],
+                from: participants[participants.length - 1],
                 msg: `Te añadio al grupo ${newRoom.name}`
             });
         }
@@ -66,7 +66,7 @@ const findRoom = async (req, res = response) => {
     const roomDB = await Room
         .findOne({ _id: idroom })
         .select(['name', 'urlpicture', 'type'])
-        .populate({ path: 'participans', select: ['name', 'urlpicture'] });
+        .populate({ path: 'participants', select: ['name', 'urlpicture'] });
 
     res.json({
         ok: true,
@@ -80,7 +80,7 @@ const removeUserFromRoom = async (req, res = response) => {
 
     await Room.updateOne( 
         { _id: idroom }, 
-        { $pull: { participans: uidParticipan } } 
+        { $pull: { participants: uidParticipan } } 
     );
 
     res.json({
@@ -95,7 +95,7 @@ const addUserToRoom = async (req, res = response) => {
     try {
         await Room.updateOne( 
             { _id: idroom }, 
-            { $addToSet: { participans: participants } } 
+            { $addToSet: { participants: participants } } 
         );
     } catch (error) {
         res.status(500).json({

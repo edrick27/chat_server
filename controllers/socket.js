@@ -68,7 +68,7 @@ const sendNotifications = async (payload) => {
         .find({ 
             online: false, 
             $and: [
-                { _id: { $in: roomDB.participans } },
+                { _id: { $in: roomDB.participants } },
                 { _id: { $ne: payload.from }, }
             ],
          })
