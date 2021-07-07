@@ -74,8 +74,23 @@ const findRoom = async (req, res = response) => {
     });
 }
 
+const removeUserFromRoom = async (req, res = response) => {
+
+    const { idroom, uidParticipan } = req.body;
+
+    await Room.updateOne( 
+        { _id: idroom }, 
+        { $pull: { participans: uidParticipan } } 
+    );
+
+    res.json({
+        ok: true,
+    });
+}
+
 module.exports = {
     getRooms,
     createRoom,
-    findRoom
+    findRoom,
+    removeUserFromRoom
 };
