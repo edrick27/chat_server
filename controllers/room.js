@@ -88,9 +88,31 @@ const removeUserFromRoom = async (req, res = response) => {
     });
 }
 
+const addUserToRoom = async (req, res = response) => {
+
+    const { idroom, participants } = req.body;
+
+    try {
+        await Room.updateOne( 
+            { _id: idroom }, 
+            { $addToSet: { participans: participants } } 
+        );
+    } catch (error) {
+        res.status(500).json({
+            'ok': false,
+            error
+        });
+    }
+
+    res.json({
+        ok: true,
+    });
+}
+
 module.exports = {
     getRooms,
     createRoom,
     findRoom,
+    addUserToRoom,
     removeUserFromRoom
 };
