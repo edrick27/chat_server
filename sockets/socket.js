@@ -1,4 +1,4 @@
-const { userConneted, userDisConneted, saveMessage, sendNotifications, getUserTyping, updateLastmsgRoom } = require('../controllers/socket');
+const { userConneted, userDisConneted, saveMessage, sendNotifications, getUserTyping, updateLastmsgRoom, setMsgRead } = require('../controllers/socket');
 const { io } = require('../index');
 
 
@@ -51,5 +51,10 @@ io.on('connection', client => {
 
     client.on('refresh-list-room', (payload) => { 
         io.to(organization_uid).emit('refresh-list-room');
+    });
+
+    client.on('set-msg-read', (payload) => { 
+        console.log("############## set-msg-read ##############");
+        setMsgRead(payload.room, user_uid);
     });
 });

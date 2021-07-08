@@ -140,6 +140,23 @@ const updateLastmsgRoom = async (idroom, idmessage) => {
     return true;
 }
 
+const setMsgRead = async (idroom, user_uid) => {
+
+    try {
+        await Message.updateMany( 
+            { 
+                room: idroom,
+                read_by: { $ne: user_uid }
+            }, 
+            { $addToSet: { read_by: user_uid } } 
+        );
+    } catch (error) { 
+        return false; 
+    }
+
+    return true;
+}
+
 
 module.exports = {
     userConneted,
@@ -148,6 +165,7 @@ module.exports = {
     getMessages,
     sendNotifications,
     getUserTyping,
+    setMsgRead,
     updateLastmsgRoom
 }
 
