@@ -7,10 +7,17 @@ const { sendNotifications } = require('./socket');
 const getRooms = async (req, res = response) => {
 
     const skip = Number(req.query.skip) || 0;
+    let user_uid = req.query.user_uid;
 
     const roomsDB = await Room
-        .find({ participants: req.query.user_uid })
+        .find({ participants: user_uid })
         .select(['name', 'urlpicture', 'type'])
+        .populate({
+            path: 'unreadMsg',
+            match: { read_by: {
+                $ne: user_uid
+            }}
+        })
         .populate({ 
             path: 'last_msg', select: ['msg', 'type', 'createdAt'],
             populate : {

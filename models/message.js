@@ -21,7 +21,13 @@ const MessageSchema = Schema({
         require: true,
         enum : ['IMAGE', 'TEXT', 'AUDIO'],
         default: 'TEXT'
-    }
+    },
+    read_by: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
+        default: []
+    }],
 }, {
     timestamps: true
 });

@@ -1,5 +1,13 @@
 const { Schema, model } = require("mongoose");
 
+var schemaOptions = {
+    toObject: {
+        virtuals: true
+    }
+    ,toJSON: {
+        virtuals: true
+    }
+};
 
 const RoomSchema = Schema({
     name: {
@@ -35,6 +43,13 @@ const RoomSchema = Schema({
         ref: 'Message',
         default: null
     }, 
+}, schemaOptions);
+
+RoomSchema.virtual('unreadMsg', {
+    ref: 'Message', // The model to use
+    localField: '_id', // Find people where `localField`
+    foreignField: 'room', // is equal to `foreignField`
+    count: true // And only get the number of docs
 });
 
 RoomSchema.method('toJSON', function() {
