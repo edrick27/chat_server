@@ -14,9 +14,10 @@ const getRooms = async (req, res = response) => {
         .select(['name', 'urlpicture', 'type'])
         .populate({
             path: 'unreadMsg',
-            match: { read_by: {
-                $ne: user_uid
-            }}
+            match: { 
+                read_by: { $ne: user_uid },
+                from: { $ne: user_uid }
+            }
         })
         .populate({ 
             path: 'last_msg', select: ['msg', 'type', 'createdAt'],
