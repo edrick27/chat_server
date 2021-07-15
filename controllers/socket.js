@@ -30,7 +30,11 @@ const saveMessage = async (payload) => {
     try {
 
         if (payload.type == 'IMAGE') {
-            payload.msg = await uploadImage(payload);
+            payload.msg = await uploadFile(payload, ".jpg");
+        }
+
+        if (payload.type == 'AUDIO') {
+            payload.msg = await uploadFile(payload, ".wav");
         }
 
         const message = new Message(payload);
@@ -95,7 +99,7 @@ const sendNotifications = async (payload) => {
     } catch (error) {}
 }
 
-const uploadImage = (payload) => {
+const uploadFile = (payload, ext) => {
 
     const spacesEndpoint = new AWS.Endpoint(process.env.DO_SPACES_ENDPOINT);
     const s3 = new AWS.S3({
@@ -105,7 +109,7 @@ const uploadImage = (payload) => {
     });
 
     let client = process.env.DO_SPACES_CLIENT;
-    let name = client + '/' + uuid.v4() + ".jpg";
+    let name = client + '/' + uuid.v4() + ext;
     let url = process.env.DO_SPACES_ROUTE + name
     let body = Buffer.from(payload.msg, 'base64');
 
