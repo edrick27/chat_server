@@ -26,6 +26,7 @@ const getRooms = async (req, res = response) => {
                 select: ['name']
             }
         })
+        .sort({ updatedAt: 'desc' })
         .skip(skip)
         .limit(20);
 

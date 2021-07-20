@@ -43,7 +43,7 @@ const RoomSchema = Schema({
         ref: 'Message',
         default: null
     }, 
-}, schemaOptions);
+}, { timestamps: true }, schemaOptions);
 
 RoomSchema.virtual('unreadMsg', {
     ref: 'Message', // The model to use
