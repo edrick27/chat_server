@@ -16,6 +16,10 @@ const MessageSchema = Schema({
         type: String,
         require: true,
     },
+    duration: {
+        type: Number,
+        require: 0,
+    },
     type: {
         type: String,
         require: true,
