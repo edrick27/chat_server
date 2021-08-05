@@ -3,10 +3,11 @@ const { Schema, model } = require("mongoose");
 var schemaOptions = {
     toObject: {
         virtuals: true
-    }
-    ,toJSON: {
+    },
+    toJSON: {
         virtuals: true
-    }
+    },
+    timestamps: true
 };
 
 const RoomSchema = Schema({
@@ -43,7 +44,7 @@ const RoomSchema = Schema({
         ref: 'Message',
         default: null
     }, 
-}, { timestamps: true }, schemaOptions);
+}, schemaOptions);
 
 RoomSchema.virtual('unreadMsg', {
     ref: 'Message', // The model to use
