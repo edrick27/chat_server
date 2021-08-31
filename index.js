@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 require('dotenv').config();
+const cors = require('cors');
 
 // DB Config
 const { dbConnection } = require('./database/config');
@@ -11,8 +12,10 @@ dbConnection();
 const app = express();
 
 // lectura de http
-
 app.use(express.json());
+
+// se activa el acceso desde otras web
+app.use(cors())
 
 // node server
 const server = require('http').createServer(app);
