@@ -16,8 +16,9 @@ app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
 
 
 // Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/csr/0000_csr-certbot.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/keys/0000_key-certbot.pem', 'utf8');
+//
+const privateKey = fs.readFileSync('/etc/letsencrypt/keys/0000_key-certbot.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/csr/0000_csr-certbot.pem', 'utf8');
 
 const credentials = {
     key: privateKey,
