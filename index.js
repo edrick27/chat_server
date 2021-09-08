@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 require('dotenv').config();
 const cors = require('cors');
+const fs = require('fs');
+
 
 // DB Config
 const { dbConnection } = require('./database/config');
@@ -10,6 +12,18 @@ dbConnection();
 
 // app express
 const app = express();
+app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
+
+
+// Certificate
+const privateKey = fs.readFileSync('/etc/letsencrypt/csr/0000_csr-certbot.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/keys/0000_key-certbot.pem', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+};
+
 
 // lectura de http
 app.use(express.json());
@@ -18,7 +32,7 @@ app.use(express.json());
 app.use(cors())
 
 // node server
-const server = require('http').createServer(app);
+const server = require('https').createServer(credentials, app);
 module.exports.io = require('socket.io')(server, {
     cors: {origin: "*"}
 });
