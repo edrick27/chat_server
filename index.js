@@ -11,9 +11,9 @@ dbConnection();
 
 
 // app express
-/* const app = express();
-app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
- */
+const app = express();
+// app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
+
 
 // Certificate
 //
