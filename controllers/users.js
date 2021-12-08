@@ -88,7 +88,7 @@ const createOrganization =  async (req, res = response) => {
     const { organization } = req.body;
 
     const organizationDB = new Organization(organization);
-    organization = await organizationDB.save()
+    const organization = await organizationDB.save()
 
     res.json({
         ok: true,
