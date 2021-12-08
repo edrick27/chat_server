@@ -88,12 +88,12 @@ const createOrganization =  async (req, res = response) => {
     const { organization } = req.body;
 
     const organizationDB = new Organization(organization);
-    const organization = await organizationDB.save()
+    const result = await organizationDB.save()
 
     res.json({
         ok: true,
         msg: 'usuarios creados con exito!',
-        organization: organization
+        organization: result
     });
 }
 
