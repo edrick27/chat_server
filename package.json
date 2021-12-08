@@ -8,7 +8,8 @@
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "start:demon": "pm2 start index.js",
-    "stop:demon": "pm2 stop index.js"
+    "stop:demon": "pm2 stop index.js",
+    "restart:demon": "pm2 stop index.js && pm2 start index.js"
   },
   "keywords": [],
   "author": "",
