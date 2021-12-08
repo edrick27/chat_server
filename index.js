@@ -12,18 +12,18 @@ dbConnection();
 
 // app express
 const app = express();
-// app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
+app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }));
 
 
 // Certificate
 //
-/* const privateKey = fs.readFileSync('key.pem', 'utf8');
+const privateKey = fs.readFileSync('key.pem', 'utf8');
 const certificate = fs.readFileSync('cert.pem', 'utf8');
 
 const credentials = {
     key: privateKey,
     cert: certificate,
-}; */
+};
 
 
 // lectura de http
@@ -33,8 +33,8 @@ app.use(express.json());
 app.use(cors())
 
 // node server
-// const server = require('https').createServer(credentials, app);
-const server = require('http').createServer(app);
+const server = require('https').createServer(credentials, app);
+// const server = require('http').createServer(app);
 module.exports.io = require('socket.io')(server, {
     cors: {origin: "*"}
 });
