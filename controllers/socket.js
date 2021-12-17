@@ -67,6 +67,8 @@ const sendNotifications = async (payload) => {
 
     const roomDB = await Room.findOne({ _id: payload.room });
     let userFrom = await User.findOne({ _id: payload.from });
+    console.log("userFrom userFrom");
+    console.log(userFrom);
     userFrom = await userFrom.populate({ path: 'organization', select: ['name', 'url'] }).execPopulate();
 
     const usersOffline = await User
