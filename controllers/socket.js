@@ -66,7 +66,8 @@ const getMessages = async (req, res = response) => {
 const sendNotifications = async (payload) => {
 
     const roomDB = await Room.findOne({ _id: payload.room });
-    const userFrom = await User.findOne({ _id: payload.from });
+    let userFrom = await User.findOne({ _id: payload.from });
+    userFrom = await newMsg.populate({ path: 'organization', select: ['name', 'url'] }).execPopulate();
 
     const usersOffline = await User
         .find({ 
