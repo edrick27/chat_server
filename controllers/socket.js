@@ -91,6 +91,9 @@ const sendNotifications = async (payload) => {
             chat_room: JSON.stringify(roomDB),
         };
 
+        console.log("userFrom userFrom");
+        console.log(userFrom.organization);
+
         const response = await axios.post(
             'https://demov2.dinganddone.com/api/sendChatNotification',
             data,
