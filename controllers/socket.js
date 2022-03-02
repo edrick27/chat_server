@@ -67,9 +67,16 @@ const sendNotifications = async (payload) => {
 
     const roomDB = await Room.findOne({ _id: payload.room });
     let userFrom = await User.findOne({ _id: payload.from });
-    console.log("userFrom userFrom");
+    console.log("userFrom 1");
     console.log(userFrom);
-    userFrom = await userFrom.populate({ path: 'organization', select: ['name', 'url'] }).execPopulate();
+
+    let organizationFrom = await Organization.findOne({ _id: userFrom.id_organization });
+    
+
+    console.log("organizationFrom 2");
+    console.log(organizationFrom);
+    console.log(payload);
+    console.log(roomDB.participants);
 
     const usersOffline = await User
         .find({ 
@@ -94,14 +101,19 @@ const sendNotifications = async (payload) => {
             chat_room: JSON.stringify(roomDB),
         };
 
-        console.log("userFrom userFrom");
-        console.log(userFrom.organization);
+        console.log("userFrom 3");
+        console.log(data);
+        console.log(`${organizationFrom.url}/api/sendChatNotification`);
 
         const response = await axios.post(
-            'https://demov2.dinganddone.com/api/sendChatNotification',
+            `${organizationFrom.url}/api/sendChatNotification`,
             data,
             { headers: { "Content-Type": "application/json" } }
         );
+
+        console.log("response 5");
+        console.log(response.status);
+        console.log(response);
     } catch (error) {}
 }
 
