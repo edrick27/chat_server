@@ -103,10 +103,13 @@ const sendNotifications = async (payload) => {
 
         console.log("userFrom 3");
         console.log(data);
-        console.log(`${organizationFrom.url}/api/sendChatNotification`);
+        
+        let url = `${organizationFrom.url}/api/sendChatNotification`
+        url = url.replace("http", "https");
+        console.log(url);
 
         const response = await axios.post(
-            `${organizationFrom.url}/api/sendChatNotification`,
+            url,
             data,
             { headers: { "Content-Type": "application/json" } }
         );
