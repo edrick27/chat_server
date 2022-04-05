@@ -45,8 +45,13 @@ const searchUsers = async (req, res = response) => {
 
     const { where, uid } = req.body;
 
+    let authUser = await User.findOne({ _id: uid });
+
     const usersDB = await User
-        .find({ name: { $regex: '.*' + where + '.*', $options: 'i' } })
+        .find({ 
+            name: { $regex: '.*' + where + '.*', $options: 'i' },
+            id_organization: authUser.id_organization,
+         })
         .sort('name')
         .limit(200);
 
