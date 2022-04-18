@@ -118,10 +118,51 @@ const addUserToRoom = async (req, res = response) => {
     });
 }
 
+const updateRoom = async (req, res = response) => {
+
+    const { idroom, urlpicture } = req.body;
+
+    try {
+        await Room.updateOne( 
+            { _id: idroom }, 
+            { urlpicture: urlpicture }
+        );
+    } catch (error) {
+        res.status(500).json({
+            'ok': false,
+            error
+        });
+    }
+
+    res.json({
+        ok: true,
+    });
+}
+
+const deleteRoom = async (req, res = response) => {
+
+    const { idroom } = req.body;
+
+    try {
+        await Room.deleteOne({ _id: idroom });
+    } catch (error) {
+        res.status(500).json({
+            'ok': false,
+            error
+        });
+    }
+
+    res.json({
+        ok: true,
+    });
+}
+
 module.exports = {
     getRooms,
     createRoom,
     findRoom,
     addUserToRoom,
-    removeUserFromRoom
+    removeUserFromRoom,
+    updateRoom,
+    deleteRoom
 };

@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 
+const Message = require("./message");
+
 var schemaOptions = {
     toObject: {
         virtuals: true
@@ -45,6 +47,11 @@ const RoomSchema = Schema({
         default: null
     }, 
 }, schemaOptions);
+
+RoomSchema.pre('deleteOne', function(next) {
+    Message.remove({room: this._id}).exec();
+    next();
+});
 
 RoomSchema.virtual('unreadMsg', {
     ref: 'Message', // The model to use
