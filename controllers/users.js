@@ -24,12 +24,6 @@ const createManyUser =  async (req, res = response) => {
     const { users, organization } = req.body;
 
     const id_organization = organization['chat_uid'];
-    const organizationExists = await Organization.findOne({ id_organization });
-
-    if (!organizationExists) {
-        const organizationDB = new Organization(organization);
-        await organizationDB.save();
-    }
 
     await User.insertMany(users);
     const allUsers = await User.find({ id_organization: id_organization });
