@@ -8,14 +8,7 @@ const deleteOrganization =  async (req, res = response) => {
 
     const { apiKey } = req.body;
 
-    return res.status(400).json({
-        ok: false,
-        msg: 'API KEY no valida',
-        key: apiKey,
-        key2: process.env.API_KEY
-    });
-
-    if(!req.body.key == process.env.API_KEY) {
+    if(apiKey != process.env.API_KEY) {
         return res.status(400).json({
             ok: false,
             msg: 'API KEY no valida'
