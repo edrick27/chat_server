@@ -24,6 +24,8 @@ const deleteOrganization =  async (req, res = response) => {
             ok: false,
             msg: 'roomIds roomIds',
             roomIds: roomIds,
+            organizationId: organizationId,
+            rooms: rooms,
         });
 
         // await Room.deleteMany({ _id: { $in: roomIds } });
