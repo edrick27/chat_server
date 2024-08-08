@@ -12,9 +12,11 @@ const deleteOrganization =  async (req, res = response) => {
             msg: 'API KEY no valida'
         });
     }
+
+    const { organizationId } = req.body;
     
     try {
-        await User.deleteMany({ id_organization: organizationId });
+        // await User.deleteMany({ id_organization: organizationId });
 
         const rooms = await Room.find({ participants: { $elemMatch: { id_organization: organizationId } } });
         const roomIds = rooms.map(room => room._id);
@@ -23,17 +25,17 @@ const deleteOrganization =  async (req, res = response) => {
 
         await Message.deleteMany({ room: { $in: roomIds } });
 
-        await Organization.deleteOne({ _id: mongoose.Types.ObjectId(organizationId) });
+        // await Organization.deleteOne({ _id: mongoose.Types.ObjectId(organizationId) });
 
         res.json({
             ok: true,
-            msg: 'Organización eliminada con exito!'
+            msg: 'Datos de laOrganización eliminados!'
         });
 
     } catch (error) {
         res.json({
             ok: false,
-            msg: 'Error al eliminar la organización'
+            msg: 'Error al eliminar'
         });
     }
 }
