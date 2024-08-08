@@ -6,6 +6,15 @@ const Message = require("../models/message");
 
 const deleteOrganization =  async (req, res = response) => {
 
+    const { apiKey } = req.body;
+
+    return res.status(400).json({
+        ok: false,
+        msg: 'API KEY no valida',
+        key: apiKey,
+        key2: process.env.API_KEY
+    });
+
     if(!req.body.key == process.env.API_KEY) {
         return res.status(400).json({
             ok: false,
@@ -23,24 +32,14 @@ const deleteOrganization =  async (req, res = response) => {
         const rooms = await Room.find({ participants: { $in: userIds } });
         const roomIds = rooms.map(room => room._id);
 
+        await Room.deleteMany({ _id: { $in: roomIds } });
 
-        return res.status(400).json({
-            ok: false,
-            msg: 'roomIds roomIds',
-            roomIds: roomIds,
-            organizationId: organizationId,
-            rooms: rooms,
+        await Message.deleteMany({ room: { $in: roomIds } });
+
+        res.json({
+            ok: true,
+            msg: 'Datos de laOrganización eliminados!'
         });
-
-        // await Room.deleteMany({ _id: { $in: roomIds } });
-
-        // await Message.deleteMany({ room: { $in: roomIds } });
-
-
-        // res.json({
-        //     ok: true,
-        //     msg: 'Datos de laOrganización eliminados!'
-        // });
 
     } catch (error) {
         res.json({
