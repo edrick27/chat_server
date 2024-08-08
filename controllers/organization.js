@@ -16,21 +16,25 @@ const deleteOrganization =  async (req, res = response) => {
     const { organizationId } = req.body;
     
     try {
-        // await User.deleteMany({ id_organization: organizationId });
 
         const rooms = await Room.find({ participants: { $elemMatch: { id_organization: organizationId } } });
         const roomIds = rooms.map(room => room._id);
 
-        await Room.deleteMany({ _id: { $in: roomIds } });
-
-        await Message.deleteMany({ room: { $in: roomIds } });
-
-        // await Organization.deleteOne({ _id: mongoose.Types.ObjectId(organizationId) });
-
-        res.json({
-            ok: true,
-            msg: 'Datos de laOrganización eliminados!'
+        return res.status(400).json({
+            ok: false,
+            msg: 'roomIds roomIds',
+            roomIds: roomIds,
         });
+
+        // await Room.deleteMany({ _id: { $in: roomIds } });
+
+        // await Message.deleteMany({ room: { $in: roomIds } });
+
+
+        // res.json({
+        //     ok: true,
+        //     msg: 'Datos de laOrganización eliminados!'
+        // });
 
     } catch (error) {
         res.json({
