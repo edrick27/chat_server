@@ -17,8 +17,12 @@ const deleteOrganization =  async (req, res = response) => {
     
     try {
 
-        const rooms = await Room.find({ participants: { $elemMatch: { id_organization: organizationId } } });
+        const users = await User.find({ id_organization: organizationId });
+        const userIds = users.map(user => user._id);
+
+        const rooms = await Room.find({ participants: { $in: userIds } });
         const roomIds = rooms.map(room => room._id);
+
 
         return res.status(400).json({
             ok: false,
