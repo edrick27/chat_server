@@ -53,9 +53,12 @@ const deleteOrganizationAPI =  async (req, res = response) => {
 
         const users = await User.find({ id_organization: organizationId });
         const userIds = users.map(user => user._id);
-
-        await User.deleteMany({ _id: { $in: userIds } });
-        // await Organization.deleteOne({ _id: organizationId });
+        
+        if(userIds.length > 0) {
+            await User.deleteMany({ _id: { $in: userIds } });
+        }
+        
+        await Organization.deleteOne({ _id: organizationId });
 
         res.json({
             ok: true,
