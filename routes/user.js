@@ -4,7 +4,7 @@
 
 const { Router } = require('express');
 const { getUsers, createUser, searchUsers, updateUserAvatar, createManyUser, createOrganization } = require('../controllers/users');
-const { deleteOrganization } = require('../controllers/organization');
+const { deleteChatsAPI, deleteOrganizationAPI } = require('../controllers/organization');
 
 
 const router = Router();
@@ -15,7 +15,8 @@ router.post('/create-many', createManyUser);
 router.post('/search', searchUsers);
 router.post('/update-avatar', updateUserAvatar);
 router.post('/create-organization', createOrganization);
-router.post('/delete-organization', deleteOrganization);
+router.post('/delete-chats', deleteChatsAPI);
+router.post('/delete-organization', deleteOrganizationAPI);
 
 
 module.exports = router;
