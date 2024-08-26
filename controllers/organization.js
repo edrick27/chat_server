@@ -47,7 +47,7 @@ const deleteOrganizationAPI =  async (req, res = response) => {
 
     const { organizationId } = req.body;
     
-    // try {
+    try {
 
         deleteChats(organizationId);
 
@@ -57,21 +57,20 @@ const deleteOrganizationAPI =  async (req, res = response) => {
         if(userIds.length > 0) {
             await User.deleteMany({ _id: { $in: userIds } });
         }
-        
+
         await Organization.deleteOne({ _id: organizationId });
 
         res.json({
             ok: true,
-            msg: 'Organización eliminada!',
-            userIds: userIds
+            msg: 'Organización eliminada!'
         });
 
-    // } catch (error) {
-    //     res.json({
-    //         ok: false,
-    //         msg: 'Error al eliminar'
-    //     });
-    // }
+    } catch (error) {
+        res.json({
+            ok: false,
+            msg: 'Error al eliminar'
+        });
+    }
 }
 
 
