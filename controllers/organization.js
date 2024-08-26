@@ -50,12 +50,16 @@ const deleteOrganizationAPI =  async (req, res = response) => {
     try {
 
         deleteChats(organizationId);
-        User.deleteMany({ id_organization: organizationId });
-        Organization.deleteOne({ _id: organizationId });
+
+        const users = await User.find({ id_organization: organizationId });
+        const userIds = users.map(user => user._id);
+
+        await User.deleteMany({ _id: { $in: userIds } });
+        await Organization.deleteOne({ _id: organizationId });
 
         res.json({
             ok: true,
-            msg: 'Datos de laOrganización eliminados!'
+            msg: 'Organización eliminada!'
         });
 
     } catch (error) {
