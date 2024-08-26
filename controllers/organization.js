@@ -23,7 +23,7 @@ const deleteChatsAPI =  async (req, res = response) => {
 
         res.json({
             ok: true,
-            msg: 'Datos de laOrganización eliminados!'
+            msg: 'Datos Chats eliminados!'
         });
 
     } catch (error) {
@@ -54,12 +54,15 @@ const deleteOrganizationAPI =  async (req, res = response) => {
         const users = await User.find({ id_organization: organizationId });
         const userIds = users.map(user => user._id);
 
-        await User.deleteMany({ _id: { $in: userIds } });
-        await Organization.deleteOne({ _id: organizationId });
+
+
+        // await User.deleteMany({ _id: { $in: userIds } });
+        // await Organization.deleteOne({ _id: organizationId });
 
         res.json({
             ok: true,
-            msg: 'Organización eliminada!'
+            msg: 'Organización eliminada!',
+            userIds: userIds
         });
 
     // } catch (error) {
@@ -85,16 +88,10 @@ const deleteChats =  async (organizationId) => {
 
         await Message.deleteMany({ room: { $in: roomIds } });
 
-        res.json({
-            ok: true,
-            msg: 'Datos de laOrganización eliminados!'
-        });
+        return true;
 
     } catch (error) {
-        res.json({
-            ok: false,
-            msg: 'Error al eliminar Chats'
-        });
+        return false;
     }
 }
 
